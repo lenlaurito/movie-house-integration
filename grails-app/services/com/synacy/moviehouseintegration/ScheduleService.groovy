@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat
 class ScheduleService {
 
     RestBuilder restBuilder
+    SimpleDateFormat simpleDateFormat
 
     static String JR_MOVIE_HOUSE_SCHEDULE_API_URL = 'http://192.168.1.55:8085/api/v1/schedule'
     static String MY_MOVIE_HOUSE_SCHEDULE_API_URL = 'http://192.168.1.203:8080/api/v1/schedule'
@@ -60,13 +61,11 @@ class ScheduleService {
     private List<Schedule> convertMovieApiScheduleResponseToScheduleList(List<Map> jsonArray) {
         List<Schedule> scheduleList = []
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-
         jsonArray.each { record ->
             Schedule schedule = new Schedule()
 
-            schedule.startDateTime = formatter.parse(record.startDateTime)
-            schedule.endDateTime = formatter.parse(record.endDateTime)
+            schedule.startDateTime = simpleDateFormat.parse(record.startDateTime)
+            schedule.endDateTime = simpleDateFormat.parse(record.endDateTime)
             schedule.movie = new Movie(name: record.movie.name, genre: record.movie.genre,
                     duration: record.movie.duration, description: record.movie.description)
             schedule.cinema = new Cinema(name: record.movie.name, type: record.cinema.type)
