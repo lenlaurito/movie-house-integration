@@ -68,7 +68,7 @@ class ScheduleService {
             schedule.endDateTime = simpleDateFormat.parse(record.endDateTime)
             schedule.movie = new Movie(name: record.movie.name, genre: record.movie.genre,
                     duration: record.movie.duration, description: record.movie.description)
-            schedule.cinema = new Cinema(name: record.movie.name, type: record.cinema.type)
+            schedule.cinema = new Cinema(name: record.cinema.name, type: record.cinema.type)
 
             scheduleList << schedule
         }
