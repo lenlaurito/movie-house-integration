@@ -7,7 +7,7 @@ class ScheduleController {
     ScheduleService scheduleService
 
     def listMovieHousesMovieSchedules() {
-        def list = scheduleService.fetchAMovieHouseSchedules()
+        HashMap<String, List<Schedule>>  list = scheduleService.fetchMovieHouseSchedules()
 
         respond(list)
     }

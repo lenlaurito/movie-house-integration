@@ -18,7 +18,7 @@ class ScheduleService {
     static String JR_MOVIE_HOUSE_SCHEDULE_API_URL = 'http://192.168.1.55:8085/api/v1/schedule'
     static String MY_MOVIE_HOUSE_SCHEDULE_API_URL = 'http://192.168.1.203:8080/api/v1/schedule'
 
-    def fetchAMovieHouseSchedules() {
+    HashMap<String, List<Schedule>> fetchMovieHouseSchedules() {
         List<Schedule> jrMovieHouseSchedules = []
 
         try {
@@ -66,9 +66,9 @@ class ScheduleService {
 
             schedule.startDateTime = simpleDateFormat.parse(record.startDateTime)
             schedule.endDateTime = simpleDateFormat.parse(record.endDateTime)
-            schedule.movie = new Movie(name: record.movie.name, genre: record.movie.genre,
+            schedule.movie = new Movie(id: record.movie.id, name: record.movie.name, genre: record.movie.genre,
                     duration: record.movie.duration, description: record.movie.description)
-            schedule.cinema = new Cinema(name: record.cinema.name, type: record.cinema.type)
+            schedule.cinema = new Cinema(id: record.cinema.id, name: record.cinema.name, type: record.cinema.type)
 
             scheduleList << schedule
         }
