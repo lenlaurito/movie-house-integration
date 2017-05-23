@@ -20,39 +20,57 @@ class ScheduleService {
     String SPRING_BOOT_MIKE_SCHEDULE_API_URL = "http://192.168.1.203:8080/api/v1/schedule"
 
     public List<Map> fetchSchedule(Date date) {
-        Map<String, Object> shopDetails1 = [:]
-        Map<String, Object> shopDetails2 = [:]
-        List<Schedule> schedules1 = []
-        List<Schedule> schedules2 = []
-        RestResponse response
+//        Map<String, Object> scheduleDetails1 = [:]
+//        Map<String, Object> scheduleDetails2 = [:]
+//        List<Schedule> schedules1 = []
+//        List<Schedule> schedules2 = []
+//        RestResponse response
+//
+//        try {
+//            response = restBuilder.get(SPRING_BOOT_STEVEN_SCHEDULE_API_URL)
+//            if (response.statusCode == HttpStatus.OK) {
+//                List jsonArray = response.json
+//                schedules1 << convertSpringBootResponseToScheduleListWithSameDate(jsonArray, date)
+//                scheduleDetails1 << [movieHouseName: "Steven's Movie House", schedules: schedules1]
+//            }
+//            else{log.error("Spring boot api responded with ${response.statusCode}: ${response.body}")}
+//        }
+//        catch (ResourceAccessException e){log.error "Cannot connect to ${SPRING_BOOT_STEVEN_SCHEDULE_API_URL}"}
+//
+//        try {
+//            response = restBuilder.get(SPRING_BOOT_MIKE_SCHEDULE_API_URL)
+//            if (response.statusCode == HttpStatus.OK) {
+//                List jsonArray = response.json
+//                schedules2 << convertSpringBootResponseToScheduleListWithSameDate(jsonArray, date)
+//                scheduleDetails2 << [movieHouseName: "Mikes's Movie House", schedules: schedules2]
+//            }
+//            else{log.error("Spring boot api responded with ${response.statusCode}: ${response.body}")}
+//        }
+//        catch (ResourceAccessException e){log.error "Cannot connect to ${SPRING_BOOT_MIKE_SCHEDULE_API_URL}"}
+        List<Map> fetchAllResult = []
+        connectAndRetrieveSchedulesFromMovieHouses(SPRING_BOOT_STEVEN_SCHEDULE_API_URL, "Steven's Movie House", date)
+        connectAndRetrieveSchedulesFromMovieHouses(SPRING_BOOT_MIKE_SCHEDULE_API_URL, "Mikes's Movie House", date)
 
-        try {
-            response = restBuilder.get(SPRING_BOOT_STEVEN_SCHEDULE_API_URL)
-
-            if (response.statusCode == HttpStatus.OK) {
-                List jsonArray = response.json
-                schedules1 << convertSpringBootResponseToScheduleList(jsonArray, date)
-                shopDetails1 << [movieHouseName: "Steven's Movie House", schedules: schedules1]
-            }
-            else{log.error("Spring boot api responded with ${response.statusCode}: ${response.body}")}
-        }
-        catch (ResourceAccessException e){log.error "Cannot connect to ${SPRING_BOOT_STEVEN_SCHEDULE_API_URL}"}
-
-        try {
-            response = restBuilder.get(SPRING_BOOT_MIKE_SCHEDULE_API_URL)
-            if (response.statusCode == HttpStatus.OK) {
-                List jsonArray = response.json
-                schedules2 << convertSpringBootResponseToScheduleList(jsonArray, date)
-                shopDetails2 << [movieHouseName: "Mikes's Movie House", schedules: schedules2]
-            }
-            else{log.error("Spring boot api responded with ${response.statusCode}: ${response.body}")}
-        }
-        catch (ResourceAccessException e){log.error "Cannot connect to ${SPRING_BOOT_MIKE_SCHEDULE_API_URL}"}
-
-        return [shopDetails1, shopDetails2]
+        return fetchAllResult
     }
 
-    private List<Schedule> convertSpringBootResponseToScheduleList(List<Map> jsonArray, Date date) {
+    private Map<String, Object> connectAndRetrieveSchedulesFromMovieHouses(String url, String movieHouseName, Date date){
+        RestResponse response
+        Map<String, Object> scheduleDetails = [:]
+        List<Schedule> scheduleList = []
+        try {
+            response = restBuilder.get(url)
+            if (response.statusCode == HttpStatus.OK) {
+                List jsonArray = response.json
+                scheduleList << convertSpringBootResponseToScheduleListWithSameDate(jsonArray, date)
+                scheduleDetails << [movieHouseName: movieHouseName, schedules: scheduleList]
+            }
+            else{log.error("Spring boot api responded with ${response.statusCode}: ${response.body}")}
+        }
+        catch (ResourceAccessException e){log.error "Cannot connect to ${url}"}
+    }
+
+    private List<Schedule> convertSpringBootResponseToScheduleListWithSameDate(List<Map> jsonArray, Date date) {
         List<Schedule> schedules = []
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd")
         jsonArray.each { record ->
