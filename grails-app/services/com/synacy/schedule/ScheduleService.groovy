@@ -3,6 +3,7 @@ package com.synacy.schedule
 import grails.plugins.rest.client.RestBuilder
 import grails.plugins.rest.client.RestResponse
 import grails.transaction.Transactional
+import grails.util.Holders
 import groovy.util.logging.Log4j
 import org.springframework.http.HttpStatus
 import org.springframework.web.client.ResourceAccessException
@@ -16,8 +17,8 @@ class ScheduleService {
 
     RestBuilder restBuilder
 
-    String SPRING_BOOT_STEVEN_SCHEDULE_API_URL = "http://localhost:8070/api/v1/schedule"
-    String SPRING_BOOT_MIKE_SCHEDULE_API_URL = "http://192.168.1.203:8080/api/v1/schedule"
+    String SPRING_BOOT_STEVEN_SCHEDULE_API_URL = Holders.grailsApplication.config.StevenMovieHouseAPI.url
+    String SPRING_BOOT_MIKE_SCHEDULE_API_URL = Holders.grailsApplication.config.MichaelMovieHouseAPI.url
 
     public List<Map> fetchSchedule(Date date) {
         List<Map> fetchAllResult = []

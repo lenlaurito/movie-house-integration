@@ -117,3 +117,6 @@ log4j.main = {
             'com.synacy.schedule',
             'com.synacy.schedule'
 }
+
+StevenMovieHouseAPI.url = "http://localhost:8070/api/v1/schedule"
+MichaelMovieHouseAPI.url = "http://192.168.1.203:8080/api/v1/schedule"
