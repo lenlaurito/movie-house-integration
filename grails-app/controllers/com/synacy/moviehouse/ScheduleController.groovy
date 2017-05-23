@@ -4,7 +4,6 @@ import com.synacy.moviehouse.utilities.DateUtils
 import com.synacy.moviehouse.schedule.Schedule
 
 import org.springframework.http.HttpStatus
-import java.text.ParseException;
 
 class ScheduleController {
 	
@@ -25,7 +24,7 @@ class ScheduleController {
 		respond([schedulesMap1, schedulesMap2])
 	}
 	
-	def handleIllegalArgument(InvalidRequestException e) {
+	def handleInvalidRequests(InvalidRequestException e) {
 		response.status = HttpStatus.UNPROCESSABLE_ENTITY.value()
 		respond([error: e.getMessage()])
 	}
