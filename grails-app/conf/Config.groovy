@@ -114,4 +114,8 @@ log4j.main = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
+           'com.synacy.moviehouse'
 }
+
+ichiApi.url = "http://localhost:8080/api/v1/schedule"
+banjoeApi.url = "http://192.168.1.37:8070/api/v1/schedule"
