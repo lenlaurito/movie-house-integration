@@ -113,5 +113,9 @@ log4j.main = {
            'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
            'org.springframework',
            'org.hibernate',
-           'net.sf.ehcache.hibernate'
+           'net.sf.ehcache.hibernate',
+		   'com.synacy.moviehouse'
 }
+
+JRMovieHouseApi.url = "http://192.168.1.55:8085/api/v1/schedule"
+KenichiMovieHouseApi.url = "http://192.168.1.177:8080/api/v1/schedule"
