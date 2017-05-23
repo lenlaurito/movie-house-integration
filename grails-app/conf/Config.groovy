@@ -113,5 +113,7 @@ log4j.main = {
            'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
            'org.springframework',
            'org.hibernate',
-           'net.sf.ehcache.hibernate'
+           'net.sf.ehcache.hibernate',
+            'com.synacy.schedule',
+            'com.synacy.schedule'
 }

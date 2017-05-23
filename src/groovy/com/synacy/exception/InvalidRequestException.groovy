@@ -1,10 +1,10 @@
-package com.synacy.schedule
+package com.synacy.exception
 
 /**
  * Created by steven on 5/22/17.
  */
 class InvalidRequestException extends RuntimeException{
-    public InvalidRequestException(){
-        super.getMessage()
+    public InvalidRequestException(String message){
+        super(message)
     }
 }
