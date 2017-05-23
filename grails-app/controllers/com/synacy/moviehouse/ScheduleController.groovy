@@ -1,9 +1,9 @@
 package com.synacy.moviehouse
 
-import com.synacy.moviehouse.utilities.DateUtils
 import com.synacy.moviehouse.schedule.Schedule
 
 import org.springframework.http.HttpStatus
+import java.text.ParseException
 
 class ScheduleController {
 	
@@ -13,9 +13,15 @@ class ScheduleController {
 	KenScheduleService kenScheduleService
 
 	def fetchAllSchedules() {
-		Date date = params.date ? DateUtils.formatStringAsDate(params.date) : null
-		if (!date) {
+		String dateStr = params.date ?: null
+		if (!dateStr) {
 			throw new InvalidRequestException("Date is a required parameter.")
+		}
+		Date date;
+		try {
+			date = Date.parse('yyyy-MM-dd', dateStr)
+		} catch (ParseException e) {
+			throw new InvalidRequestException("Unable to parse date. Use this format 'yyyy-MM-dd' instead.")
 		}
 		List<Schedule> schedulesJR = myScheduleService.fetchSchedules(date)
 		List<Schedule> schedulesKen = kenScheduleService.fetchSchedules(date)

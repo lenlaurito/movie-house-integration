@@ -1,7 +1,6 @@
 package com.synacy.moviehouse
 
 import com.synacy.moviehouse.schedule.Schedule
-import com.synacy.moviehouse.utilities.DateUtils
 
 import grails.plugins.rest.client.RestBuilder
 import grails.plugins.rest.client.RestResponse
@@ -23,10 +22,10 @@ class KenScheduleService {
 	List<Schedule> fetchSchedules(Date date) {
 		List<Schedule> schedules = []
 		try {
-			RestResponse response = restBuilder.get(KEN_MOVIE_HOUSE_SCHEDULE_API_URL + "?date=" + DateUtils.formatDateAsString(date, "yyyy-MM-dd"))
+			RestResponse response = restBuilder.get(KEN_MOVIE_HOUSE_SCHEDULE_API_URL + "?date=" + date.format('yyyy-MM-dd'))
 			if (response.statusCode == HttpStatus.OK) {
 				List jsonArray = response.json
-				schedules = convertSpringBootResponseToScheduleMap(jsonArray)
+				schedules = convertSpringBootResponseToScheduleList(jsonArray)
 			} else {
 				log.error("Spring boot api responded with ${response.statusCode}: ${response.body}")
 			}
@@ -36,14 +35,14 @@ class KenScheduleService {
 		return schedules
 	}
 	
-	private List<Schedule> convertSpringBootResponseToScheduleMap(List<Map> jsonArray) {
+	private List<Schedule> convertSpringBootResponseToScheduleList(List<Map> jsonArray) {
 		List<Schedule> schedules = []
 		jsonArray.each { record ->
 			Schedule schedule = new Schedule()
-			schedule.movie = [id: record.movie]
-			schedule.cinema = [id: record.cinema]
-			schedule.startDateTime = DateUtils.formatStringAsDate((String) record.startDateTime)
-			schedule.endDateTime = DateUtils.formatStringAsDate((String) record.endDateTime)
+			schedule.movie = [name: record.movie.name]
+			schedule.cinema = [name: record.cinema.name]
+			schedule.startDateTime = Date.parse('yyyy-MM-dd HH:mm', record.startDateTime)
+			schedule.endDateTime = Date.parse('yyyy-MM-dd HH:mm', record.endDateTime)
 			schedules << schedule
 		}
 		return schedules
